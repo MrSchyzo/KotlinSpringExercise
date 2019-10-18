@@ -1,24 +1,24 @@
 package com.github.mrschyzo.resource
 
-import com.github.mrschyzo.dto.input.Task as InTask
-import com.github.mrschyzo.dto.output.Task as OutTask
+import com.github.mrschyzo.controller.TaskController
 import org.springframework.web.bind.annotation.*
+import com.github.mrschyzo.dto.input.Task as InTask
 
 @RestController
-class Tasks {
+class Tasks(
+        private val taskController: TaskController
+) {
     @GetMapping("/user/{userId}/tasks")
     @ResponseBody
-    fun getTasksByUser(@PathVariable userId : String) = listOf(1, 2)
+    fun getTasksByUser(@PathVariable userId : Int) = taskController.getTasksByUser(userId)
 
     @PostMapping("/tasks")
-    fun createTask(@RequestBody task : InTask) : Int {
-        println(task)
-        return 1
-    }
+    fun createTask(@RequestBody task : InTask) : Int = taskController.createTask(task)
 
     @GetMapping("/tasks/{id}")
-    fun getTaskById(@PathVariable id : Int) = OutTask(id, "Task$id", "This is task with id $id", "Done", listOf(1,2,3,4))
+    @ResponseBody
+    fun getTaskById(@PathVariable id : Int) = taskController.getTaskById(id)
 
     @PutMapping("/tasks/{id}")
-    fun closeTaskById(@PathVariable id : Int) = println("Closing task $id")
+    fun closeTaskById(@PathVariable id : Int) = taskController.closeTaskById(id)
 }
