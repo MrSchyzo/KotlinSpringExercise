@@ -1,5 +1,8 @@
 package com.github.mrschyzo.controller
 
+import com.github.mrschyzo.error.TaskDoesNotBelongToUserException
+import com.github.mrschyzo.error.TaskNotFoundException
+import com.github.mrschyzo.error.UserNotFoundException
 import com.github.mrschyzo.model.Task
 import com.github.mrschyzo.repository.TaskRepository
 import com.github.mrschyzo.repository.UserRepository
@@ -23,7 +26,7 @@ open class RepoTaskController(
                 .filter{ ! it.isPresent }
                 .findFirst()
                 .flatMap { it }
-                .map { RuntimeException("User with id ${it.id} not found") }
+                .map { UserNotFoundException("User with id ${it.id} not found") }
                 .ifPresent { throw it }
 
         return tasks.save(Task(0, task.name, task.description, "CREATED", users.map{maybe -> maybe.get()})).id
@@ -34,19 +37,20 @@ open class RepoTaskController(
             tasks.findById(id).map {
                 OutTask(it.id, it.name, it.description, it.status, it.assignees.map { x -> x.id })
             }.orElseThrow {
-                RuntimeException("Task with id $id not found")
+                TaskNotFoundException("Task with id $id not found")
             }
 
     @Transactional
     override fun closeTaskById(id: Int, userId: Int) {
-        tasks.findById(id).map {
+        val task = tasks.findById(id).map {
             Task(it.id, it.name, it.description, "CLOSED", it.assignees)
-        }.filter {
-            it.isOwnedByUserId(userId)
-        }.map {
-            tasks.saveAndFlush(it)
         }.orElseThrow {
-            RuntimeException("There is not any task with id $id that belongs to user with id $userId")
+            TaskNotFoundException("There is not any task with id $id")
         }
+
+        if (!task.isOwnedByUserId(userId))
+            throw TaskDoesNotBelongToUserException("Task $id does not belong to user $userId")
+
+        tasks.saveAndFlush(task)
     }
 }
