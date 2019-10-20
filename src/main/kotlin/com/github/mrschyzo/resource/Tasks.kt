@@ -19,6 +19,6 @@ class Tasks(
     @ResponseBody
     fun getTaskById(@PathVariable id : Int) = taskController.getTaskById(id)
 
-    @PutMapping("/tasks/{id}")
-    fun closeTaskById(@PathVariable id : Int) = taskController.closeTaskById(id)
+    @PutMapping("/user/{userId}/tasks/{id}")
+    fun closeTaskById(@PathVariable id : Int, @PathVariable userId : Int) = taskController.closeTaskById(id, userId)
 }

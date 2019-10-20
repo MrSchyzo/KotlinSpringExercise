@@ -1,12 +1,12 @@
 SET foreign_key_checks = 0;
-insert into task (`id`, `name`, description, status)
+insert into task (`name`, description, status)
 values
-    (1, 'task', 'description', 'CREATED'),
-    (2, 'task', 'description', 'CREATED'),
-    (3, 'task', 'description', 'CREATED');
+    ('task', 'description', 'CREATED'),
+    ('task', 'description', 'CREATED'),
+    ('task', 'description', 'CREATED');
 
-insert into `user` (`id`)
-values (1), (2), (3), (4);
+insert into `user` ()
+values (), (), (), ();
 
 insert into course_like (task_id, user_id)
 values

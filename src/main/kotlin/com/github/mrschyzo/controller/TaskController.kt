@@ -7,5 +7,5 @@ interface TaskController {
     fun getTasksByUser(userId : Int) : List<Int>
     fun createTask(task : InTask) : Int
     fun getTaskById(id : Int) : OutTask
-    fun closeTaskById(id : Int)
+    fun closeTaskById(id : Int, userId: Int)
 }
