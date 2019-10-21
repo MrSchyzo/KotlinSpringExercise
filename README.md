@@ -52,16 +52,16 @@ of maintaining software inside my computer. It is easier to speed up local manua
 whenever I want and throw away an unhealthy/inconsistent server if I mess something up.
 
 ### Endpoints
-#### GET /user/{userId}/tasks
+#### `GET /user/{userId}/tasks`
 Retrieving all tasks owned by a user means that an userId must be provided in order to identify it. Exposing it as a query
 parameter looks less suitable for a required parameter. Other than that, retrieving all tasks owned by a User might look
 like something belonging to its details and that can justify a two-level deep path.
-#### POST /tasks
+#### `POST /tasks`
 Creating a resource is a POST request as it is not an idempotent operation. It is not tied to a particular User as a Task
 might have multiple owners: specifying a User inside the path does not make too much sense.
-#### GET /tasks/{id}
+#### `GET /tasks/{id}`
 It just looks the most suitable way to declare an endpoint to retrieve a specific resource. That is all.
-#### PUT /user/{userId}/tasks/{id}
+#### `PUT /user/{userId}/tasks/{id}`
 This is my least safe choice in my opinion: I decided to make Task closure as an idempotent operation, that justifies
 the HTTP verb. Regarding the URL itself, the choice is only focused on giving the User ID of an owner of the specified
 task: this implementation does not consider any kind of authentication middleware between the request and its execution.
