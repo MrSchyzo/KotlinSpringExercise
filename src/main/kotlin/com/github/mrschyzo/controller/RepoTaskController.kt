@@ -29,7 +29,7 @@ open class RepoTaskController(
                 .map { UserNotFoundException("User with id ${it.id} not found") }
                 .ifPresent { throw it }
 
-        return tasks.save(Task(0, task.name, task.description, "CREATED", users.map{maybe -> maybe.get()})).id
+        return tasks.save(Task(0, task.name, task.description, "OPEN", users.map{maybe -> maybe.get()})).id
     }
 
     @Transactional
