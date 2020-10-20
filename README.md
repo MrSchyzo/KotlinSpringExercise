@@ -1,4 +1,4 @@
-# RGiChallenge
+# Kotlin Spring Exercise
 
 
 
